@@ -9,7 +9,7 @@ class JsonSerializer implements Serializer
     public function toString(RdKafkaMessage $message): string
     {
         $json = json_encode([
-            'body' => $message->getBody(),
+            'body' => utf8_encode($message->getBody()),
             'properties' => $message->getProperties(),
             'headers' => $message->getHeaders(),
         ]);
@@ -36,6 +36,6 @@ class JsonSerializer implements Serializer
             ));
         }
 
-        return new RdKafkaMessage($data['body'], $data['properties'], $data['headers']);
+        return new RdKafkaMessage(utf8_decode($data['body']), $data['properties'], $data['headers']);
     }
 }
